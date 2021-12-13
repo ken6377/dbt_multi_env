@@ -1,0 +1,83 @@
+version: 2
+
+sources:
+  - name: hogemon_dataset
+    description: このデータセット(`hogemon_dataset`)はAirbyteから転送されてきたローデータとステージング用テーブルを格納するためだけのものです。
+    schema: hogemon_dataset
+    loader: airbyte
+    quoting:
+      schema: true
+      identifier: true
+    tables:
+      - name: _airbyte_raw_pokemon
+      - name: pokemon
+      - name: pokemon_abilities
+      - name: pokemon_abilities_ability
+      - name: pokemon_forms
+        columns:
+          - name: url 
+            tests:
+              - not_null
+      - name: pokemon_game_indices
+      - name: pokemon_game_indices_version
+      - name: pokemon_held_items
+      - name: pokemon_held_items_item
+      - name: pokemon_held_items_version_details
+      - name: pokemon_held_items_version_details_version
+      - name: pokemon_moves
+      - name: pokemon_moves_move
+      - name: pokemon_moves_version_group_details
+      - name: pokemon_moves_version_group_details_move_learn_method
+      - name: pokemon_moves_version_group_details_version_group
+      - name: pokemon_species
+      - name: pokemon_sprites
+      - name: pokemon_stats
+      - name: pokemon_stats_stat
+      - name: pokemon_types
+      - name: pokemon_types_type
+
+models:
+  - name: stg_abilities_merge
+    description: A list of abilities this Pokémon could potentially have.
+  - name: stg_forms
+    description: A list of forms this Pokémon can take on.
+  - name: stg_game_indices_merge
+    description: A list of game indices relevent to Pokémon item by generation.
+  - name: stg_moves_merge
+    description: A list of moves along with learn methods and level details pertaining to specific version groups.
+  - name: stg_species
+    description: The species this Pokémon belongs to.
+  - name: stg_sprites
+    description: A set of sprites used to depict this Pokémon in the game. A visual representation of the various sprites can be found at [PokeAPI/sprites](https://github.com/PokeAPI/sprites#sprites)
+  - name: stg_stats_merge
+    description: A list of base stat values for this Pokémon.
+  - name: stg_types_merge
+    description: A list of details showing types this Pokémon has.
+
+  - name: repo_moves_redblue
+    description: A list of Mewtwo's moves in Pokémon Red/Blue
+    columns:
+      - name: level_learned_at
+        tests:
+          - not_null
+      - name: move_name
+        tests:
+          - not_null
+      - name: learn_method_name
+        tests:
+          - not_null
+      - name: version_name
+        tests:
+          - not_null
+  - name: repo_stats
+    description: base_stat > 100
+    columns:
+      - name: stat_name
+        tests:
+          - not_null
+      - name: effort
+        tests:
+          - not_null
+      - name: base_stat
+        tests:
+          - not_null

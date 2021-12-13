@@ -1,0 +1,44 @@
+name: dbt_job
+
+on: workflow_dispatch
+      
+env:
+  DBT_PROFILES_DIR: ./
+
+  DBT_GOOGLE_PROJECT_PROD: ${{ secrets.DBT_GOOGLE_PROJECT_PROD }}
+  DBT_GOOGLE_BIGQUERY_DATASET_PROD: ${{ secrets.DBT_GOOGLE_BIGQUERY_DATASET_PROD }}
+  # The DBT_GOOGLE_BIGQUERY_KEYFILE_PROD secret will be written to a json file below
+  DBT_GOOGLE_BIGQUERY_KEYFILE_PROD: ./dbt-service-account.json
+
+jobs:
+  sample_run:
+    name: sample_run
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@master
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.9.x"
+
+      - name: Authenticate using service account
+        run: 'echo "$KEYFILE" > ./dbt-service-account.json'
+        shell: bash
+        env:
+          KEYFILE: ${{secrets.DBT_GOOGLE_BIGQUERY_KEYFILE_PROD}}
+
+      - name: Install dbt
+        run: pip install dbt-bigquery
+
+      - run: dbt --version
+      
+      - name: Test dbt sources
+        run: dbt test -s source:* --target prod
+
+      - name: Run dbt models
+        run: dbt run --target prod
+        
+      - name: Test dbt exclude sources
+        run: dbt test --exclude source:* --target prod
