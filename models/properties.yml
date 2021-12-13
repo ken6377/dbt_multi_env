@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: hogemon_dataset
-    description: このデータセット(`hogemon_dataset`)はAirbyteから転送されてきたローデータとステージング用テーブルを格納するためだけのものです。
+    description: このデータセット(`hogemon_dataset`)はAirbyteから転送されてきたローデータを格納します。
     schema: hogemon_dataset
     loader: airbyte
     quoting:
