@@ -60,10 +60,6 @@ models:
       - name: level_learned_at
         tests:
           - not_null
-        meta:
-          metrics:
-            sum_level_learned_at:
-              type: sum  
       - name: move_name
         tests:
           - not_null
