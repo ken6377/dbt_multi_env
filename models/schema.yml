@@ -81,3 +81,24 @@ models:
       - name: base_stat
         tests:
           - not_null
+
+metrics:
+  - name: sum_base_stat
+    label: stats
+    model: ref('repo_stats')
+    description: "Amount of base stat"
+
+    type: sum
+    sql: base_stat # superflous here, but shown as an example
+
+    timestamp: signup_date
+    time_grains: [day, week, month]
+
+    dimensions:
+      - stat_name
+    
+    filters:
+      - field: effort
+        value: true
+
+    meta: {category: stat}    
