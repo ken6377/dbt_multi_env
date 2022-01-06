@@ -26,4 +26,4 @@ I've checked it works with [this Docker Image](https://hub.docker.com/layers/xem
 
 ## FYI
 - [hogemon](https://github.com/ken6377/hogemon)
-- [Airbyte + dbt クイックハンズオン on GCP](https://kwknkk.hatenablog.com/entry/2021/12/06/171912)
+- [Airbyte + dbt クイックハンズオン on GCP](https://ken6377.github.io/post/aibyte-dbt-hands-on)
